@@ -10,6 +10,7 @@ class HomeController extends GetxController {
   final addformController = TextEditingController();
   final tasks = <Task>[].obs;
   final chipIndex = 0.obs;
+  final deleting = false.obs;
 
   @override
   void onInit() {
@@ -26,6 +27,10 @@ class HomeController extends GetxController {
     return true;
   }
 
+  void changeDeleting(bool value) {
+    deleting.value = value;
+  }
+
   @override
   void onClose() {
     addformController.dispose();
@@ -33,6 +38,10 @@ class HomeController extends GetxController {
   }
 
   void changeChipIndex(int value) => chipIndex.value = value;
+
+  void deleteTask(Task task) {
+    tasks.remove(task);
+  }
 }
 
 // extension on Task {
