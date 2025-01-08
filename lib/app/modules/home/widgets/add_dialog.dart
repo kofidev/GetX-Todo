@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:getx_todo/app/core/utils/extensions.dart';
 import 'package:getx_todo/app/modules/home/controller.dart';
@@ -22,6 +23,8 @@ class AddDialog extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       Get.back();
+                      homeController.addformController.clear();
+                      homeController.changeTask(null);
                     },
                     icon: Icon(Icons.close),
                     color: Colors.red,
@@ -31,7 +34,26 @@ class AddDialog extends StatelessWidget {
                     style: ButtonStyle(
                         overlayColor:
                             WidgetStateProperty.all(Colors.transparent)),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (homeController.formKey.currentState!.validate()) {
+                        if (homeController.task.value == null) {
+                          EasyLoading.showError('Please select your task type');
+                        } else {
+                          var success = homeController.updateTask(
+                              homeController.task.value!,
+                              homeController.addformController.text);
+                          if (success) {
+                            EasyLoading.showSuccess(
+                                'Todo item added successfully');
+                            Get.back();
+                            homeController.changeTask(null);
+                          } else {
+                            EasyLoading.showError('Item already exist');
+                          }
+                          homeController.addformController.clear();
+                        }
+                      }
+                    },
                     child: Text(
                       'Done',
                       style: TextStyle(fontSize: 14.0.sp, color: Colors.blue),
@@ -83,23 +105,28 @@ class AddDialog extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: 5.0.wp, vertical: 3.0.wp),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            IconData(
-                              element.icon,
-                              fontFamily: 'MaterialIcons',
-                            ),
-                            color: HexColor.fromHex(element.color!),
-                          ),
-                          SizedBox(
-                            width: 3.0.wp,
-                          ),
-                          Text(
-                            element.title,
-                            style: TextStyle(
-                              fontSize: 12.0.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            children: [
+                              Icon(
+                                IconData(
+                                  element.icon,
+                                  fontFamily: 'MaterialIcons',
+                                ),
+                                color: HexColor.fromHex(element.color!),
+                              ),
+                              SizedBox(
+                                width: 3.0.wp,
+                              ),
+                              Text(
+                                element.title,
+                                style: TextStyle(
+                                  fontSize: 12.0.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                           if (homeController.task.value == element)
                             const Icon(

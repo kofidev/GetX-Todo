@@ -56,7 +56,7 @@ class TaskCard extends StatelessWidget {
                   task.title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 8.0.wp,
+                    fontSize: 14.0.sp,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
