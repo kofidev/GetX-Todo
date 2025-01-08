@@ -6,6 +6,8 @@ class Task extends Equatable {
   final String? color;
   final List<dynamic>? todos;
 
+  static var value;
+
   const Task({
     required this.title,
     required this.icon,
@@ -40,6 +42,4 @@ class Task extends Equatable {
       };
   @override
   List<Object?> get props => [title, icon, color];
-
-  // void add(Task task) {}
 }

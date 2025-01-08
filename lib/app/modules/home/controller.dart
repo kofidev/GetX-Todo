@@ -11,12 +11,17 @@ class HomeController extends GetxController {
   final tasks = <Task>[].obs;
   final chipIndex = 0.obs;
   final deleting = false.obs;
+  final task = Rx<Task?>(null);
 
   @override
   void onInit() {
     super.onInit();
     tasks.assignAll(taskRepository.readTask());
     ever(tasks, (_) => taskRepository.writeTasks(tasks));
+  }
+
+  void changeTask(Task? select) {
+    Task.value = select;
   }
 
   bool addTask(Task task) {
@@ -43,7 +48,3 @@ class HomeController extends GetxController {
     tasks.remove(task);
   }
 }
-
-// extension on Task {
-//   void add(Task task) {}
-// }

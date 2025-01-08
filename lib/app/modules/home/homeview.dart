@@ -5,6 +5,7 @@ import 'package:getx_todo/app/core/utils/extensions.dart';
 import 'package:getx_todo/app/data/models/task.dart';
 import 'package:getx_todo/app/modules/home/controller.dart';
 import 'package:getx_todo/app/modules/home/widgets/add_card.dart';
+import 'package:getx_todo/app/modules/home/widgets/add_dialog.dart';
 import 'package:getx_todo/app/modules/home/widgets/task_card.dart';
 
 class Homeview extends GetView<HomeController> {
@@ -39,7 +40,7 @@ class Homeview extends GetView<HomeController> {
                       onDragEnd: (_) => controller.changeDeleting(false),
                       feedback: Opacity(opacity: 0.8),
                       childWhenDragging: Opacity(
-                        opacity: 0.5,
+                        opacity: 0.8,
                         child: TaskCard(task: element),
                       ),
                       child: TaskCard(task: element),
@@ -56,7 +57,8 @@ class Homeview extends GetView<HomeController> {
         builder: (_, __, ___) {
           return Obx(
             () => FloatingActionButton(
-              onPressed: () {},
+              onPressed: () =>
+                  Get.to(() => AddDialog(), transition: Transition.downToUp),
               backgroundColor:
                   controller.deleting.value ? Colors.red : Colors.blueAccent,
               child: Icon(controller.deleting.value ? Icons.delete : Icons.add),
