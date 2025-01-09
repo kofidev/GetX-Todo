@@ -34,13 +34,20 @@ class Homeview extends GetView<HomeController> {
                   ...controller.tasks.map(
                     (element) => LongPressDraggable(
                       data: element,
+                      dragAnchorStrategy: pointerDragAnchorStrategy,
                       onDragStarted: () => controller.changeDeleting(true),
                       onDraggableCanceled: (_, __) =>
                           controller.changeDeleting(false),
                       onDragEnd: (_) => controller.changeDeleting(false),
-                      feedback: Opacity(opacity: 0.8),
+                      feedback: Material(
+                        color: Colors.transparent,
+                        child: Opacity(
+                          opacity: 0.8,
+                          child: TaskCard(task: element),
+                        ),
+                      ),
                       childWhenDragging: Opacity(
-                        opacity: 0.8,
+                        opacity: 0.5,
                         child: TaskCard(task: element),
                       ),
                       child: TaskCard(task: element),
@@ -56,13 +63,13 @@ class Homeview extends GetView<HomeController> {
       floatingActionButton: DragTarget(
         builder: (_, __, ___) {
           return Obx(
-            () => FloatingActionButton(
-              onPressed: () =>
-                  Get.to(() => AddDialog(), transition: Transition.downToUp),
-              backgroundColor:
-                  controller.deleting.value ? Colors.red : Colors.blueAccent,
-              child: Icon(controller.deleting.value ? Icons.delete : Icons.add),
-            ),
+            () => FloatingActionButton(onPressed: () {
+              if (controller.tasks.isEmpty) {
+                Get.to(() => AddDialog(), transition: Transition.downToUp);
+              } else {
+                EasyLoading.showInfo('Please create your task type');
+              }
+            }),
           );
         },
         // ignore: deprecated_member_use
