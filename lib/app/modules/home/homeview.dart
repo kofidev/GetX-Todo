@@ -53,6 +53,7 @@ class Homeview extends GetView<HomeController> {
                       child: TaskCard(task: element),
                     ),
                   ),
+                  // .toList(),
                   AddCard()
                 ],
               ),
@@ -63,13 +64,18 @@ class Homeview extends GetView<HomeController> {
       floatingActionButton: DragTarget(
         builder: (_, __, ___) {
           return Obx(
-            () => FloatingActionButton(onPressed: () {
-              if (controller.tasks.isEmpty) {
-                Get.to(() => AddDialog(), transition: Transition.downToUp);
-              } else {
-                EasyLoading.showInfo('Please create your task type');
-              }
-            }),
+            () => FloatingActionButton(
+              backgroundColor:
+                  controller.deleting.value ? Colors.red : Colors.blueAccent,
+              onPressed: () {
+                if (controller.tasks.isNotEmpty) {
+                  Get.to(() => AddDialog(), transition: Transition.downToUp);
+                } else {
+                  EasyLoading.showInfo('Please create your task type');
+                }
+              },
+              child: Icon(controller.deleting.value ? Icons.delete : Icons.add),
+            ),
           );
         },
         // ignore: deprecated_member_use

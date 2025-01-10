@@ -26,16 +26,44 @@ class DetailPage extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              Icon(
-                IconData(
-                  task.icon,
-                  fontFamily: 'MaterialIcons',
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0.wp),
+            child: Row(
+              children: [
+                Icon(
+                  IconData(
+                    task.icon,
+                    fontFamily: 'MaterialIcons',
+                  ),
+                  color: color,
                 ),
+                SizedBox(width: 2.0.wp),
+                Text(
+                  task.title,
+                  style: TextStyle(
+                    fontSize: 12.0.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Obx(() {
+            var totalTodos = homeController.doingTodos.length +
+                homeController.doneTodos.length;
+            return Padding(
+              padding:
+                  EdgeInsets.only(left: 16.0.wp, right: 16.0.wp, top: 3.0.wp),
+              child: Row(
+                children: [
+                  Text(
+                    '$totalTodos Tasks',
+                    style: TextStyle(fontSize: 12.0.sp, color: Colors.grey),
+                  ),
+                ],
               ),
-            ],
-          )
+            );
+          })
         ],
       ),
     );
