@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:getx_todo/app/core/utils/extensions.dart';
 import 'package:getx_todo/app/modules/home/controller.dart';
@@ -24,6 +25,9 @@ class DetailPage extends StatelessWidget {
                   IconButton(
                       onPressed: () {
                         Get.back();
+                        homeController.updateTodos();
+                        homeController.changeTask(null);
+                        homeController.addformController.clear();
                       },
                       icon: Icon(Icons.arrow_back))
                 ],
@@ -95,9 +99,46 @@ class DetailPage extends StatelessWidget {
                 );
               },
             ),
-            TextFormField(
-              controller: homeController.addformController,
-            )
+            Padding(
+              padding:
+                  EdgeInsets.symmetric(vertical: 2.0.wp, horizontal: 5.0.wp),
+              child: TextFormField(
+                controller: homeController.addformController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey[400]!,
+                    ),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.check_box_outline_blank,
+                    color: Colors.grey[400],
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      if (homeController.formKey.currentState!.validate()) {
+                        var success = homeController
+                            .addTodo!(homeController.addformController.text);
+                        if (success) {
+                          EasyLoading.showSuccess('Todo item add success');
+                        } else {
+                          EasyLoading.showError('Tod item already exist');
+                        }
+                        homeController.addformController.clear();
+                      }
+                    },
+                    icon: const Icon(Icons.done),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter your todo item';
+                  }
+                  return null;
+                },
+              ),
+            ),
           ],
         ),
       ),

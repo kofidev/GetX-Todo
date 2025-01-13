@@ -96,6 +96,7 @@ class AddCard extends StatelessWidget {
                                   ? EasyLoading.showSuccess(
                                       'Created Successfully')
                                   : EasyLoading.showError('Duplicated Task');
+                              homeController.addformController.clear();
                             }
                           },
                           style: ElevatedButton.styleFrom(
